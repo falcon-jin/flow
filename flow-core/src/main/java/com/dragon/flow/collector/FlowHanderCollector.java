@@ -8,16 +8,11 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 
-
 /**
- * 消费者收集器
- * 收集所有加了PulsarConsumer注解的类信息 放入ConsumerHolder中
+ * 收集所有加了FlowHander注解的类信息
  */
 //@Configuration
 public class FlowHanderCollector implements BeanPostProcessor {
-
-
-
 
     private Map<String, Class> handers = new ConcurrentHashMap<>();
 
@@ -25,16 +20,15 @@ public class FlowHanderCollector implements BeanPostProcessor {
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) {
         final Class<?> beanClass = bean.getClass();
-        if(beanClass.isAnnotationPresent(FlowHander.class)){
+        if (beanClass.isAnnotationPresent(FlowHander.class)) {
             FlowHander annotation = beanClass.getAnnotation(FlowHander.class);
             String[] value = annotation.value();
-            if(value.length==0){
-                throw new RuntimeException(beanClass.getName()+"类，FlowHander注解中的value不能为空，请设置流程key");
+            if (value.length == 0) {
+                throw new RuntimeException(beanClass.getName() + "类，FlowHander注解中的value不能为空，请设置流程key");
             }
             for (int i = 0; i < value.length; i++) {
-                handers.put(value[i],beanClass);
+                handers.put(value[i], beanClass);
             }
-
         }
         return bean;
     }
