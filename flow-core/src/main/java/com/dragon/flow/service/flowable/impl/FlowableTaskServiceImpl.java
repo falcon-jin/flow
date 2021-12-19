@@ -166,7 +166,7 @@ public class FlowableTaskServiceImpl extends BaseProcessService implements IFlow
 
     private void setTaskVoData(List<TaskVo> taskVoList) {
         if (CollectionUtils.isNotEmpty(taskVoList)){
-            long currTime = new Date().getTime();
+            long currTime = System.currentTimeMillis();
             for (TaskVo taskVo : taskVoList) {
                 taskVo.setProcessStatusName(ProcessStatusEnum.getEnumMsgByType(taskVo.getProcessStatus()));
                 long time = taskVo.getCreateTime().getTime();
