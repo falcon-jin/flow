@@ -3,7 +3,6 @@ package com.dragon.flow.web.resource.hr;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.dragon.flow.constant.FlowFrontConstant;
 import com.dragon.flow.enm.LeaveTypeEnum;
-import com.dragon.flow.main.FlowFrontApplication;
 import com.dragon.flow.model.hr.Leave;
 import com.dragon.flow.model.user.Account;
 import com.dragon.flow.service.hr.ILeaveService;
@@ -65,8 +64,8 @@ public class LeaveResource extends BaseResource {
         Map<String, Object> variables = new HashMap<>();
         variables.put("days", leave.getDays());
         List<String> userList = new ArrayList<>();
-        userList.add("10003");
-        userList.add("10004");
+        userList.add("10000");
+        //userList.add("10004");
         variables.put("userList",userList);
         startProcessInstanceVo.setVariables(variables);
         String url = this.getApiUrl(FlowFrontConstant.START_PROCESSINSTANCEBYKEY_URL);

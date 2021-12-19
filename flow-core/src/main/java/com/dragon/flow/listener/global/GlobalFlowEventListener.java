@@ -23,6 +23,7 @@ import org.flowable.engine.delegate.event.FlowableProcessStartedEvent;
 import org.flowable.engine.history.HistoricProcessInstance;
 import org.flowable.engine.impl.persistence.entity.ExecutionEntityImpl;
 import org.flowable.engine.runtime.ProcessInstance;
+import org.flowable.variable.api.event.FlowableVariableEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,6 +57,11 @@ public class GlobalFlowEventListener extends AbstractFlowableEngineEventListener
     @Autowired
     private FlowHanderCollector flowHanderCollector;
 
+    @Override
+    protected void variableCreated(FlowableVariableEvent event) {
+        Object variableValue = event.getVariableValue();
+        System.out.println(variableValue);
+    }
 
     /**
      * 流程启动事件
@@ -98,7 +104,7 @@ public class GlobalFlowEventListener extends AbstractFlowableEngineEventListener
                 FlowableEngineEventType type = annotation.type();
                 if(engineEventType.equals(type)){
                     try {
-                      declaredMethod.invoke(bean, event);
+                        declaredMethod.invoke(bean, event);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

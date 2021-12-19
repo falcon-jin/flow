@@ -37,7 +37,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * @program: flow
@@ -110,7 +109,7 @@ public class FlowProcessDiagramServiceImpl implements IFlowProcessDiagramService
     public HighLightedNodeVo getHighLightedNodeVoByProcessInstanceId(String processInstanceId) {
         Cache cache = cacheManager.getCache(FlowConstant.CACHE_PROCESS_HIGHLIGHTEDNODES);
         Cache.ValueWrapper valueWrapper = cache.get(processInstanceId);
-        if (valueWrapper != null) {
+        if (valueWrapper != null && valueWrapper.get()!= null) {
             return (HighLightedNodeVo) valueWrapper.get();
         }
         HighLightedNodeVo highLightedNodeVo = this.findHighLightedNodeVoByProcessInstanceId(processInstanceId);
