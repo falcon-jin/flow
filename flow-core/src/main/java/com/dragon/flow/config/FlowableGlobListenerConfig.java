@@ -1,9 +1,7 @@
 package com.dragon.flow.config;
 
 
-import com.dragon.flow.listener.global.GlobalProcistEndListener;
-import com.dragon.flow.listener.global.GlobalProcistStartListener;
-import com.dragon.flow.listener.global.GlobalTaskCreateListener;
+import com.dragon.flow.listener.global.GlobalFlowEventListener;
 import org.flowable.common.engine.api.delegate.event.FlowableEngineEventType;
 import org.flowable.common.engine.api.delegate.event.FlowableEventDispatcher;
 import org.flowable.spring.SpringProcessEngineConfiguration;
@@ -24,19 +22,20 @@ public class FlowableGlobListenerConfig implements ApplicationListener<ContextRe
     @Autowired
     private SpringProcessEngineConfiguration configuration;
     @Autowired
-    private GlobalProcistEndListener globalProcistEndListener;
-    @Autowired
-    private GlobalProcistStartListener globalProcistStartListener;
-    @Autowired
-    private GlobalTaskCreateListener globalTaskCreateListener;
+    private GlobalFlowEventListener globalFlowEventListener;
+
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
         FlowableEventDispatcher dispatcher = configuration.getEventDispatcher();
         //添加流程实例创建全局监听
-        dispatcher.addEventListener(globalProcistStartListener, FlowableEngineEventType.PROCESS_STARTED);
-        //添加流程实例结束全局监听
-        dispatcher.addEventListener(globalProcistEndListener, FlowableEngineEventType.PROCESS_COMPLETED);
-        dispatcher.addEventListener(globalTaskCreateListener, FlowableEngineEventType.TASK_CREATED);
+        dispatcher.addEventListener(globalFlowEventListener,
+                FlowableEngineEventType.PROCESS_STARTED, //流程开始事件
+                FlowableEngineEventType.PROCESS_COMPLETED,//流程结束事件
+                FlowableEngineEventType.PROCESS_CANCELLED,////流程取消
+                FlowableEngineEventType.TASK_CREATED,//用户任务创建事件
+                FlowableEngineEventType.TASK_COMPLETED//用户任务结束事件
+        );
+
     }
 }

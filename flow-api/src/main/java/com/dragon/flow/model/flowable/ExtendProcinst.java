@@ -1,19 +1,18 @@
 package com.dragon.flow.model.flowable;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
-import java.time.LocalDateTime;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.dragon.tools.common.BaseModel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
  * <p>
- * 
+ * 流程shi'li扩展信息
  * </p>
  *
- * @author bruce.liu
+ * @author bru实例
  * @since 2021-04-21
  */
 @Data
