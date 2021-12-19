@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 public class LeaveHander {
     @FlowMethodHander(type = FlowableEngineEventType.PROCESS_STARTED)
     public String handerStart(FlowableProcessStartedEvent event){
-
+        System.out.println("任务执行了，1");
         return "";
     }
 }

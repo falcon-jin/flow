@@ -2,6 +2,7 @@ package com.dragon.flow.listener.global;
 
 import cn.hutool.extra.spring.SpringUtil;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
+import com.dragon.flow.annotation.FlowMethodHander;
 import com.dragon.flow.enm.flowable.runtime.CommentTypeEnum;
 import com.dragon.flow.enm.flowable.runtime.ProcessStatusEnum;
 import com.dragon.flow.model.flowable.CommentInfo;
@@ -12,6 +13,7 @@ import com.dragon.flow.service.flowable.IExtendHisprocinstService;
 import com.dragon.flow.service.flowable.IExtendProcinstService;
 import org.apache.commons.lang.StringUtils;
 import org.flowable.common.engine.api.delegate.event.FlowableEngineEntityEvent;
+import org.flowable.common.engine.api.delegate.event.FlowableEngineEventType;
 import org.flowable.common.engine.impl.event.FlowableEntityEventImpl;
 import org.flowable.engine.HistoryService;
 import org.flowable.engine.RuntimeService;
@@ -26,6 +28,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.lang.reflect.Method;
+import java.util.Objects;
 
 /**
  * @author : bruce.liu
@@ -80,8 +85,30 @@ public class GlobalFlowEventListener extends AbstractFlowableEngineEventListener
                 runtimeService.setProcessInstanceName(processInstance.getProcessInstanceId(), superProcessInstance.getName());
             }
         }
+        //获取流程定义key
         String processDefinitionKey = processInstance.getProcessDefinitionKey();
+        //获取对象名称
         Object bean = SpringUtil.getBean(processDefinitionKey);
+
+        Class<?> aClass = bean.getClass();
+        Method[] declaredMethods = aClass.getDeclaredMethods();
+        for (Method declaredMethod : declaredMethods) {
+            FlowMethodHander annotation = declaredMethod.getAnnotation(FlowMethodHander.class);
+            if(Objects.nonNull(annotation)){
+                FlowableEngineEventType type = annotation.type();
+               if( FlowableEngineEventType.PROCESS_STARTED.equals(type)){
+                   Class<?>[] parameterTypes = declaredMethod.getParameterTypes();
+                   try {
+                       declaredMethod.invoke(bean,event);
+                   } catch (Exception e) {
+                       e.printStackTrace();
+                   }
+               }
+
+            }
+        }
+        System.out.println(aClass.getName());
+        System.out.println(bean);
     }
 
 
