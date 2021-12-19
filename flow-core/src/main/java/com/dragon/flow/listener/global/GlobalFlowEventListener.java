@@ -3,6 +3,7 @@ package com.dragon.flow.listener.global;
 import cn.hutool.extra.spring.SpringUtil;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.dragon.flow.annotation.FlowMethodHander;
+import com.dragon.flow.collector.FlowHanderCollector;
 import com.dragon.flow.enm.flowable.runtime.CommentTypeEnum;
 import com.dragon.flow.enm.flowable.runtime.ProcessStatusEnum;
 import com.dragon.flow.model.flowable.CommentInfo;
@@ -54,6 +55,8 @@ public class GlobalFlowEventListener extends AbstractFlowableEngineEventListener
     private ICommentInfoService commentInfoService;
     @Autowired
     private RuntimeService runtimeService;
+    @Autowired
+    private FlowHanderCollector flowHanderCollector;
 
 
     /**
@@ -87,11 +90,12 @@ public class GlobalFlowEventListener extends AbstractFlowableEngineEventListener
         }
         //获取流程定义key
         String processDefinitionKey = processInstance.getProcessDefinitionKey();
+        Class aClass = flowHanderCollector.getClassName(processDefinitionKey);
         //获取对象名称
-        Object bean = SpringUtil.getBean(processDefinitionKey);
-
-        Class<?> aClass = bean.getClass();
+        Object bean = SpringUtil.getBean(aClass);
+        //Class<?> aClass = bean.getClass();
         Method[] declaredMethods = aClass.getDeclaredMethods();
+
         for (Method declaredMethod : declaredMethods) {
             FlowMethodHander annotation = declaredMethod.getAnnotation(FlowMethodHander.class);
             if(Objects.nonNull(annotation)){
@@ -107,8 +111,6 @@ public class GlobalFlowEventListener extends AbstractFlowableEngineEventListener
 
             }
         }
-        System.out.println(aClass.getName());
-        System.out.println(bean);
     }
 
 

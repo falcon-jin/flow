@@ -15,7 +15,6 @@ import org.springframework.stereotype.Repository;
  * @author bruce.liu
  * @since 2021-04-27
  */
-@Repository
 public interface IPositionInfoMapper extends BaseMapper<PositionInfo> {
 
     IPage<PositionInfo> getPagerModel(IPage<PositionInfo> page, @Param("positionInfo") PositionInfo positionInfo);

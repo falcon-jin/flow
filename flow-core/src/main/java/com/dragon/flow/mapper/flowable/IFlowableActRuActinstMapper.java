@@ -14,7 +14,6 @@ import java.util.List;
  * @author: Bruce.Liu
  * @create: 2021-05-06 14:05
  **/
-@Repository
 public interface IFlowableActRuActinstMapper extends BaseMapper<FlowableActRuActinst> {
 
     List<FlowableActRuActinst> getActRuActinstsByProcessInstanceIdAndActId(@Param("processInstanceId") String processInstanceId, @Param("disActivityId") String disActivityId);

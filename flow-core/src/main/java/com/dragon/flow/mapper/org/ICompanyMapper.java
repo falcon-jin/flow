@@ -10,6 +10,6 @@ import org.springframework.stereotype.Repository;
  * @author: Bruce.Liu
  * @create: 2021-03-23 22:36
  **/
-@Repository
+
 public interface ICompanyMapper extends BaseMapper<Company> {
 }

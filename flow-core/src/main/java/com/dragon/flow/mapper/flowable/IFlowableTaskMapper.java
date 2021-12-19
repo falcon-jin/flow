@@ -12,7 +12,6 @@ import org.springframework.stereotype.Repository;
  * @author: Bruce.Liu
  * @create: 2021-04-22 23:08
  **/
-@Repository
 public interface IFlowableTaskMapper {
     IPage<TaskVo> getApplyedTasksPagerModel(IPage<TaskVo> page, @Param("params") TaskQueryParamsVo params);
 

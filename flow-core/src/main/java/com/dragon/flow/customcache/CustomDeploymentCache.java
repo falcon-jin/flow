@@ -26,7 +26,7 @@ import java.util.Collections;
  * 
  * @author Joram Barrez
  */
-@Component
+//@Component
 public class CustomDeploymentCache implements DeploymentCache<ProcessDefinitionCacheEntry> {
 
     protected String id;

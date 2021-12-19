@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
  * @author bruce.liu
  * @since 2021-04-27
  */
-@Repository
+
 public interface IJobGradeTypeMapper extends BaseMapper<JobGradeType> {
 
 }

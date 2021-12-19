@@ -1,0 +1,13 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.dragon.flow.collector.FlowHanderCollector,\
+com.dragon.flow.config.modeler.DatabaseConfiguration,\
+com.dragon.flow.config.modeler.ModelerBeanConfig,\
+com.dragon.flow.config.CacheConfig,\
+com.dragon.flow.config.FlowableGlobListenerConfig,\
+com.dragon.flow.config.FlowBpmnConfig,\
+com.dragon.flow.config.FlowConfig,\
+com.dragon.flow.config.FlowDmnConfig,\
+com.dragon.flow.config.LocalDateTimeConfiguration,\
+com.dragon.flow.config.MybatisPlusConfig,\
+com.dragon.flow.config.TransactionConfig,\
+com.dragon.flow.properties.DragonFlowProperties

@@ -14,13 +14,12 @@ package com.dragon.flow.customcache;
 
 import org.flowable.common.engine.impl.persistence.deploy.DeploymentCache;
 import org.flowable.engine.impl.persistence.deploy.ProcessDefinitionInfoCacheObject;
-import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-@Component
+//@Component
 public class CustomProcessDefinitionInfoCache implements DeploymentCache<ProcessDefinitionInfoCacheObject> {
 
     private final Map<String, ProcessDefinitionInfoCacheObject> cache = new ConcurrentHashMap<>();

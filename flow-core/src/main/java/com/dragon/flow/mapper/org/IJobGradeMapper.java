@@ -15,7 +15,7 @@ import java.util.List;
  * @author bruce.liu
  * @since 2021-04-27
  */
-@Repository
+
 public interface IJobGradeMapper extends BaseMapper<JobGrade> {
 
 }

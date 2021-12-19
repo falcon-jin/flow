@@ -1,10 +1,9 @@
 package com.dragon.flow.mapper.flowable;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.dragon.flow.model.flowable.ModelInfo;
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.stereotype.Repository;
 
 /**
  * <p>
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Repository;
  * @author bruce.liu
  * @since 2021-04-20
  */
-@Repository
 public interface IModelInfoMapper extends BaseMapper<ModelInfo> {
 
     /**

@@ -10,6 +10,5 @@ import org.springframework.stereotype.Repository;
  * @author: Bruce.Liu
  * @create: 2021-03-23 23:13
  **/
-@Repository
 public interface IGroupMapper extends BaseMapper<Group> {
 }

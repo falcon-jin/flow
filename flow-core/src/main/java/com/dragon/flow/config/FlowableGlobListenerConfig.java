@@ -7,6 +7,7 @@ import org.flowable.common.engine.api.delegate.event.FlowableEventDispatcher;
 import org.flowable.spring.SpringProcessEngineConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.ContextRefreshedEvent;
 
@@ -18,12 +19,12 @@ import org.springframework.context.event.ContextRefreshedEvent;
  * @date : 2021/05/11
  */
 @Configuration
+@ComponentScan("com.dragon.flow.listener.*")
 public class FlowableGlobListenerConfig implements ApplicationListener<ContextRefreshedEvent> {
     @Autowired
     private SpringProcessEngineConfiguration configuration;
     @Autowired
     private GlobalFlowEventListener globalFlowEventListener;
-
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {

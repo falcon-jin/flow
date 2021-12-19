@@ -13,7 +13,6 @@ import java.util.List;
  * @author: Bruce.Liu
  * @create: 2021-03-24 09:58
  **/
-@Repository
 public interface IAppPrivilegeValueMapper extends BaseMapper<AppPrivilegeValue> {
 
 

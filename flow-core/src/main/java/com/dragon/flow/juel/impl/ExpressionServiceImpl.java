@@ -4,8 +4,9 @@ import com.alibaba.fastjson.JSONObject;
 import com.dragon.flow.exception.FlowException;
 import com.dragon.flow.juel.IExpressionService;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.MapUtils;
-import org.apache.log4j.Logger;
 import org.flowable.common.engine.api.delegate.Expression;
 import org.flowable.common.engine.impl.de.odysseus.el.ExpressionFactoryImpl;
 import org.flowable.common.engine.impl.de.odysseus.el.misc.TypeConverter;
@@ -18,8 +19,6 @@ import org.flowable.engine.ManagementService;
 import org.flowable.engine.RuntimeService;
 import org.flowable.engine.impl.cfg.ProcessEngineConfigurationImpl;
 import org.flowable.engine.impl.persistence.entity.ExecutionEntity;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.List;
@@ -32,16 +31,13 @@ import java.util.Map;
  * @Date 2019/4/25/025 9:45
  * @Version 1.0
  **/
-@Service
+//@Service
+@AllArgsConstructor
+@Slf4j
 public class ExpressionServiceImpl implements IExpressionService {
-    private static Logger logger = Logger.getLogger(ExpressionServiceImpl.class);
-    @Autowired
     protected ProcessEngineConfigurationImpl processEngineConfiguration;
-    @Autowired
     private RuntimeService runtimeService;
-    @Autowired
     private TypeConverter typeConverter;
-    @Autowired
     private ManagementService managementService;
 
 
@@ -70,6 +66,7 @@ public class ExpressionServiceImpl implements IExpressionService {
      * @param exps              表达式列表
      * @return
      */
+    @Override
     public Map<String, String> getStrValues(String processInstanceId, List<String> exps) {
         ExpressionManager expressionManager = processEngineConfiguration.getExpressionManager();
         ExecutionEntity executionEntity = (ExecutionEntity) runtimeService.createProcessInstanceQuery().processInstanceId(processInstanceId).includeProcessVariables().singleResult();
@@ -91,6 +88,7 @@ public class ExpressionServiceImpl implements IExpressionService {
      * @param clazz  映射出来的值
      * @return
      */
+    @Override
     public <T> T getValue(Map<String, Object> params, String exp, Class<T> clazz) {
         ExpressionFactory factory = new ExpressionFactoryImpl();
         SimpleContext context = new SimpleContext();
@@ -113,12 +111,13 @@ public class ExpressionServiceImpl implements IExpressionService {
             ValueExpression e = factory.createValueExpression(context, exp, clazz);
             returnObj = e.getValue(context);
         } catch (PropertyNotFoundException e) {
-            logger.error("流程变量的属性找不到，请确认!", e);
+            log.error("流程变量的属性找不到，请确认!", e);
             throw new FlowException("流程变量的属性找不到，请确认!", e);
         }
         return typeConverter.convert(returnObj, clazz);
     }
 
+    @Override
     public String getStrValue(Map<String, Object> params, String exp) {
         String value = "";
         try {
@@ -128,6 +127,7 @@ public class ExpressionServiceImpl implements IExpressionService {
         return value;
     }
 
+    @Override
     public Boolean getBooleanValue(Map<String, Object> params, String exp, boolean flag) {
         Boolean value = false;
         try {

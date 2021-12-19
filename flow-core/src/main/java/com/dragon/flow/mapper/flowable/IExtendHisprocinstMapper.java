@@ -12,7 +12,6 @@ import org.springframework.stereotype.Repository;
  * @author bruce.liu
  * @since 2021-04-21
  */
-@Repository
 public interface IExtendHisprocinstMapper extends BaseMapper<ExtendHisprocinst> {
 
 }

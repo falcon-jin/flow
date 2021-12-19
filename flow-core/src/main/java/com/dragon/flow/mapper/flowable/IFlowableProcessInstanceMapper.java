@@ -12,7 +12,6 @@ import org.springframework.stereotype.Repository;
  * @author: Bruce.Liu
  * @create: 2021-03-27 01:04
  **/
-@Repository
 public interface IFlowableProcessInstanceMapper {
 
     IPage<ProcessInstanceVo> findMyProcessinstancesPagerModel(IPage<ProcessInstanceVo> page, @Param("params") InstanceQueryParamsVo params);

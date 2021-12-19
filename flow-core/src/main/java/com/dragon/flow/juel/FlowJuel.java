@@ -1,19 +1,20 @@
 package com.dragon.flow.juel;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.SetUtils;
 import org.apache.commons.lang.StringUtils;
-import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @Description: 个性化处理表达式
  * @Author: Bruce.liu
  * @Since:16:54 2021/03/24
  */
-@Component(value = "fuel")
+//@Component(value = "fuel")
 public class FlowJuel implements Serializable {
 
     private static final long serialVersionUID = 1653010136813862205L;

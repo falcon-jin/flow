@@ -12,7 +12,6 @@ import java.util.List;
  * @author: Bruce.Liu
  * @create: 2021-03-23 23:07
  **/
-@Repository
 public interface IModuleMapper extends BaseMapper<Module> {
     /**
      * 通过模型id列表得到模型列表

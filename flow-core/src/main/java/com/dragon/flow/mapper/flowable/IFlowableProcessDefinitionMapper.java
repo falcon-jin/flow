@@ -10,6 +10,5 @@ import org.springframework.stereotype.Repository;
  * @author: Bruce.Liu
  * @create: 2021-03-27 01:04
  **/
-@Repository
 public interface IFlowableProcessDefinitionMapper extends BaseMapper<FlowableProcessDefinition> {
 }

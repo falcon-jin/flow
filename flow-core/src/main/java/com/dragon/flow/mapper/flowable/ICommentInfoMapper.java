@@ -14,7 +14,6 @@ import java.util.List;
  * @author bruce.liu
  * @since 2021-04-20
  */
-@Repository
 public interface ICommentInfoMapper extends BaseMapper<CommentInfo> {
 
     /**

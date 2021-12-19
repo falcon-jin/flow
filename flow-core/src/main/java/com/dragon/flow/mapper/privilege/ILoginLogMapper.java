@@ -10,6 +10,5 @@ import org.springframework.stereotype.Repository;
  * @author: Bruce.Liu
  * @create: 2021-03-23 22:52
  **/
-@Repository
 public interface ILoginLogMapper extends BaseMapper<LoginLog> {
 }

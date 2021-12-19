@@ -13,7 +13,6 @@ import java.util.List;
  * @author: Bruce.Liu
  * @create: 2021-03-23 23:27
  **/
-@Repository
 public interface IAclMapper extends BaseMapper<ACL> {
     /**
      * 通过角色列表获取ACL列表

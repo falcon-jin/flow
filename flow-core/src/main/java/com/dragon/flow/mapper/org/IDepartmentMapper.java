@@ -14,7 +14,7 @@ import java.util.List;
  * @author: Bruce.Liu
  * @create: 2021-03-23 22:42
  **/
-@Repository
+
 public interface IDepartmentMapper extends BaseMapper<Department> {
     List<Department> getDepartments(@Param("depart") Department department);
 

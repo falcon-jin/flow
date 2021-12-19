@@ -12,7 +12,6 @@ import org.springframework.stereotype.Repository;
  * @author bruce.liu
  * @since 2021-06-28
  */
-@Repository
 public interface IFlowListenerMapper extends BaseMapper<FlowListener> {
 
 }

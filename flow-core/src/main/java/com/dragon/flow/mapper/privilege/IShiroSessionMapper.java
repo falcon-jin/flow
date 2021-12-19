@@ -10,6 +10,5 @@ import org.springframework.stereotype.Repository;
  * @author: Bruce.Liu
  * @create: 2021-04-02 10:31
  **/
-@Repository
 public interface IShiroSessionMapper extends BaseMapper<ShiroSession> {
 }
