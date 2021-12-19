@@ -2,7 +2,6 @@ package com.dragon.flow.service.flowable.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.dragon.flow.constant.FlowConstant;
 import com.dragon.flow.enm.flowable.runtime.CommentTypeEnum;
 import com.dragon.flow.enm.flowable.runtime.ProcessStatusEnum;
 import com.dragon.flow.exception.FlowException;
@@ -28,8 +27,6 @@ import org.flowable.task.api.DelegationState;
 import org.flowable.task.api.Task;
 import org.flowable.task.service.impl.persistence.entity.TaskEntity;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.Cache;
-import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -71,20 +68,24 @@ public class FlowableTaskServiceImpl extends BaseProcessService implements IFlow
         ReturnVo<String> returnVo = new ReturnVo<>(ReturnCode.SUCCESS, "OK");
         try {
             if (completeTaskVo != null && StringUtils.isNotBlank(completeTaskVo.getTaskId())){
+                //查询任务信息
                 TaskEntity task = (TaskEntity) taskService.createTaskQuery().taskId(completeTaskVo.getTaskId()).singleResult();
                 if (task != null){
+                    //设置流程实例
                     if (StringUtils.isBlank(completeTaskVo.getProcessInstanceId())){
                         completeTaskVo.setProcessInstanceId(task.getProcessInstanceId());
                     }
                     this.evictHighLightedNodeCache(task.getProcessInstanceId());
                     this.evictOneActivityVoCache(task.getProcessInstanceId(), task.getTaskDefinitionKey());
                     String taskId = completeTaskVo.getTaskId();
+                    //待办
                     if (DelegationState.PENDING.equals(task.getDelegationState())){
                         Task subTask = this.createSubTask(task, task.getParentTaskId(), completeTaskVo.getUserCode());
                         taskService.complete(subTask.getId());
                         taskId = subTask.getId();
                         taskService.resolveTask(completeTaskVo.getTaskId(), completeTaskVo.getVariables());
                     } else {
+                        //任务已经结束
                         flowableTaskMapper.updateHisAssignee(taskId, completeTaskVo.getUserCode());
                         if (MapUtils.isNotEmpty(completeTaskVo.getVariables())){
                             taskService.complete(completeTaskVo.getTaskId(), completeTaskVo.getVariables());
@@ -93,6 +94,7 @@ public class FlowableTaskServiceImpl extends BaseProcessService implements IFlow
                         }
 //                        taskService.setAssignee(taskId, completeTaskVo.getUserCode());
                         String parentTaskId = task.getParentTaskId();
+                        //结束父任务
                         if (StringUtils.isNotBlank(parentTaskId)){
                             String tableName = managementService.getTableName(TaskEntity.class);
                             String sql = "select count(1) from " + tableName + " where PARENT_TASK_ID_=#{parentTaskId}";
@@ -109,6 +111,7 @@ public class FlowableTaskServiceImpl extends BaseProcessService implements IFlow
                     completeTaskVo.setTaskId(taskId);
                     completeTaskVo.setActivityId(task.getTaskDefinitionKey());
                     completeTaskVo.setActivityName(task.getName());
+                   // 添加审批意见
                     this.addFlowCommentInfoAndProcessStatus(completeTaskVo);
                 } else {
                     returnVo = new ReturnVo<>(ReturnCode.FAIL, "没有查询到任务!");
