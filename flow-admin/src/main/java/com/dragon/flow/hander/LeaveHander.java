@@ -1,9 +1,22 @@
 package com.dragon.flow.hander;
 
+import com.dragon.flow.annotation.FlowHander;
+import com.dragon.flow.annotation.FlowMethodHander;
+import org.flowable.common.engine.api.delegate.event.FlowableEngineEventType;
+import org.flowable.engine.delegate.event.FlowableProcessStartedEvent;
+import org.springframework.stereotype.Component;
+
 /**
- * @Author: qy
+ * @Author: 请假流程处理类
  * @Date: 2021/12/19 13:41
  * @Description:
  */
+@FlowHander("leave")
+@Component("leave")
 public class LeaveHander {
+    @FlowMethodHander(type = FlowableEngineEventType.PROCESS_STARTED)
+    public String handerStart(FlowableProcessStartedEvent event){
+
+        return "";
+    }
 }

@@ -1,5 +1,6 @@
 package com.dragon.flow.listener.global;
 
+import cn.hutool.extra.spring.SpringUtil;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.dragon.flow.enm.flowable.runtime.CommentTypeEnum;
 import com.dragon.flow.enm.flowable.runtime.ProcessStatusEnum;
@@ -79,6 +80,8 @@ public class GlobalFlowEventListener extends AbstractFlowableEngineEventListener
                 runtimeService.setProcessInstanceName(processInstance.getProcessInstanceId(), superProcessInstance.getName());
             }
         }
+        String processDefinitionKey = processInstance.getProcessDefinitionKey();
+        Object bean = SpringUtil.getBean(processDefinitionKey);
     }
 
 

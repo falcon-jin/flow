@@ -9,7 +9,7 @@ import java.lang.annotation.*;
  * <p>
 
  */
-@Target({ElementType.METHOD, ElementType.TYPE})
+@Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface FlowHander {
