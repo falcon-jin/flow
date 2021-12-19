@@ -17,7 +17,7 @@ import java.lang.annotation.*;
 @Component
 public @interface FlowHander {
     /**
-     * 流程key
+     * 流程定义id
      */
     String[] value() ;
 }

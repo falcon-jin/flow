@@ -15,7 +15,6 @@ import com.dragon.flow.service.flowable.IExtendProcinstService;
 import org.apache.commons.lang.StringUtils;
 import org.flowable.common.engine.api.delegate.event.FlowableEngineEntityEvent;
 import org.flowable.common.engine.api.delegate.event.FlowableEngineEventType;
-import org.flowable.common.engine.impl.event.FlowableEntityEventImpl;
 import org.flowable.engine.HistoryService;
 import org.flowable.engine.RuntimeService;
 import org.flowable.engine.delegate.event.AbstractFlowableEngineEventListener;
@@ -24,7 +23,6 @@ import org.flowable.engine.delegate.event.FlowableProcessStartedEvent;
 import org.flowable.engine.history.HistoricProcessInstance;
 import org.flowable.engine.impl.persistence.entity.ExecutionEntityImpl;
 import org.flowable.engine.runtime.ProcessInstance;
-import org.flowable.task.service.impl.persistence.entity.TaskEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,7 +65,6 @@ public class GlobalFlowEventListener extends AbstractFlowableEngineEventListener
     protected void processStarted(FlowableProcessStartedEvent event) {
         org.flowable.engine.delegate.event.impl.FlowableEntityEventImpl flowableEntityEvent = (org.flowable.engine.delegate.event.impl.FlowableEntityEventImpl) event;
         ExecutionEntityImpl processInstance = (ExecutionEntityImpl) flowableEntityEvent.getEntity();
-        logger.error("流程启动事件{}",processInstance.getProcessInstanceId());
         //创建子流程的扩展信息
         ExecutionEntityImpl parent = processInstance.getParent();
         if (StringUtils.isNotBlank(parent.getProcessInstanceId()) && StringUtils.isBlank(parent.getBusinessKey())){
@@ -89,26 +86,23 @@ public class GlobalFlowEventListener extends AbstractFlowableEngineEventListener
             }
         }
         //获取流程定义key
-        String processDefinitionKey = processInstance.getProcessDefinitionKey();
-        Class aClass = flowHanderCollector.getClassName(processDefinitionKey);
-        //获取对象名称
+        process(event,processInstance.getProcessDefinitionId(), FlowableEngineEventType.PROCESS_STARTED);
+    }
+    protected void  process(Object event, String processDefinitionId,FlowableEngineEventType engineEventType){
+        Class aClass = flowHanderCollector.getClassName(processDefinitionId);
         Object bean = SpringUtil.getBean(aClass);
-        //Class<?> aClass = bean.getClass();
         Method[] declaredMethods = aClass.getDeclaredMethods();
-
         for (Method declaredMethod : declaredMethods) {
             FlowMethodHander annotation = declaredMethod.getAnnotation(FlowMethodHander.class);
             if(Objects.nonNull(annotation)){
                 FlowableEngineEventType type = annotation.type();
-               if( FlowableEngineEventType.PROCESS_STARTED.equals(type)){
-                   Class<?>[] parameterTypes = declaredMethod.getParameterTypes();
-                   try {
-                       declaredMethod.invoke(bean,event);
-                   } catch (Exception e) {
-                       e.printStackTrace();
-                   }
-               }
-
+                if(engineEventType.equals(type)){
+                    try {
+                      declaredMethod.invoke(bean, event);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         }
     }
@@ -120,14 +114,9 @@ public class GlobalFlowEventListener extends AbstractFlowableEngineEventListener
      */
     @Override
     protected void taskCreated(FlowableEngineEntityEvent event) {
-        logger.error("用户任务创建事件{}",event.getProcessInstanceId());
-        FlowableEntityEventImpl flowableEntityEvent = (FlowableEntityEventImpl) event;
-        TaskEntity entity = (TaskEntity) flowableEntityEvent.getEntity();
-        //任务节点定义key
-        String taskDefinitionKey = entity.getTaskDefinitionKey();
-        //任务处理人
-        String assignee = entity.getAssignee();
-        logger.error("用户任务创建事件当前任务处理人{},任务定义key{},任务名称{}",assignee,taskDefinitionKey,entity.getName());
+        String processDefinitionId = event.getProcessDefinitionId();
+        //获取流程定义key
+        process(event,processDefinitionId, FlowableEngineEventType.TASK_CREATED);
 
     }
 
@@ -137,14 +126,7 @@ public class GlobalFlowEventListener extends AbstractFlowableEngineEventListener
      */
     @Override
     protected void taskCompleted(FlowableEngineEntityEvent event) {
-        logger.error("用户任务结束事件{}",event.getProcessInstanceId());
-        org.flowable.engine.delegate.event.impl.FlowableEntityEventImpl flowableEntityEvent = (org.flowable.engine.delegate.event.impl.FlowableEntityEventImpl) event;
-        TaskEntity entity = (TaskEntity) event.getEntity();
-        //任务节点定义key
-        String taskDefinitionKey = entity.getTaskDefinitionKey();
-        //任务处理人
-        String assignee = entity.getAssignee();
-        logger.error("当前任务处理人{},任务定义key{},任务名称{}",assignee,taskDefinitionKey,entity.getName());
+        process(event,event.getProcessDefinitionId(), FlowableEngineEventType.TASK_COMPLETED);
     }
 
     /**
@@ -153,7 +135,6 @@ public class GlobalFlowEventListener extends AbstractFlowableEngineEventListener
      */
     @Override
     protected void processCompleted(FlowableEngineEntityEvent event) {
-        logger.error("流程结束事件{}",event.getProcessInstanceId());
         org.flowable.engine.delegate.event.impl.FlowableEntityEventImpl flowableEntityEvent = (org.flowable.engine.delegate.event.impl.FlowableEntityEventImpl) event;
         String processInstanceId = flowableEntityEvent.getProcessInstanceId();
         //1.更新历史的流程实例的扩展信息
@@ -186,6 +167,7 @@ public class GlobalFlowEventListener extends AbstractFlowableEngineEventListener
             /*if (!processStatus.equals(ProcessStatusEnum.ZZ.toString()) && dragonFlowProperties.isMessageEnabled()) {
                 this.sendMessage(processInstanceId);
             }*/
+        process(event,event.getProcessDefinitionId(), FlowableEngineEventType.PROCESS_COMPLETED);
     }
     /**
      * 流程取消事件
@@ -194,6 +176,7 @@ public class GlobalFlowEventListener extends AbstractFlowableEngineEventListener
     @Override
     protected void processCancelled(FlowableCancelledEvent event) {
         logger.info("{}流程取消了",event.getProcessInstanceId());
+        process(event,event.getProcessDefinitionId(), FlowableEngineEventType.PROCESS_CANCELLED);
     }
 
 }
