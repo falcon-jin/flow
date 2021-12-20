@@ -20,9 +20,9 @@ import java.util.Map;
 /**
  * @Author: 请假流程处理类
  * @Date: 2021/12/19 13:41
- * @Description:
+ * @Description: leave:1:66580c30200e11ecbaee00e04d680167
  */
-@FlowHander("leave:2:2e5f0bae60c411ecb07494e70bb49f51")
+@FlowHander({"leave:2:2e5f0bae60c411ecb07494e70bb49f51","leave:1:66580c30200e11ecbaee00e04d680167"})
 public class LeaveHander {
     @Autowired
     private RuntimeService runtimeService;
