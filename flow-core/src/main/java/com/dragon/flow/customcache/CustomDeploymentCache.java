@@ -15,14 +15,13 @@ package com.dragon.flow.customcache;
 import org.flowable.common.engine.impl.persistence.deploy.DeploymentCache;
 import org.flowable.engine.impl.persistence.deploy.ProcessDefinitionCacheEntry;
 import org.flowable.engine.repository.ProcessDefinition;
-import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
 /**
- * Very simplistic cache implementation that only caches one process definition.
+ * 非常简单的缓存实现，只缓存一个流程定义
  * 
  * @author Joram Barrez
  */

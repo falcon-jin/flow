@@ -19,6 +19,9 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * 自定义流程定义信息缓存
+ */
 //@Component
 public class CustomProcessDefinitionInfoCache implements DeploymentCache<ProcessDefinitionInfoCacheObject> {
 
