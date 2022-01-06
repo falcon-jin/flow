@@ -8,7 +8,7 @@ import com.dragon.flow.exception.FlowException;
 import com.dragon.flow.mapper.flowable.IFlowableTaskMapper;
 import com.dragon.flow.service.flowable.BaseProcessService;
 import com.dragon.flow.service.flowable.IFlowableTaskService;
-import com.dragon.flow.utils.DurationUtils;
+import com.dragon.tools.utils.DurationUtils;
 import com.dragon.flow.vo.flowable.task.CompleteTaskVo;
 import com.dragon.flow.vo.flowable.task.TaskQueryParamsVo;
 import com.dragon.flow.vo.flowable.task.TaskVo;
